@@ -9,7 +9,7 @@
 				margin: 0px auto;
 				max-width: 1150px;
 			}
-			
+
 			#overlay, #webgl {
 				position: absolute;
 				top: 0px;
@@ -39,14 +39,14 @@
 				position : relative;
 				width : 370px;
 			}
-			
+
 			#content {
 				margin-top : 50px;
 				margin-left : auto;
 				margin-right : auto;
 				max-width: 600px;
 			}
-			 
+
 			#sketch {
 				display: none;
 			}
@@ -58,7 +58,7 @@
 			.masks {
 				display: none;
 			}
-			
+
 			.btn {
 				font-family: 'Lato';
 				font-size: 16px;
@@ -82,7 +82,7 @@
 		<script src="js/face_deformer.js"></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/poisson_new.js"></script>
-		
+
 		<div id="content">
 			<div id="container">
 				<video id="videoel" width="400" height="300" preload="auto">
@@ -136,13 +136,13 @@
 
 				var vid = document.getElementById('videoel');
 				var overlay = document.getElementById('overlay');
-				var overlayCC = overlay.getContext('2d');	
-				
+				var overlayCC = overlay.getContext('2d');
+
 				/*********** Setup of video/webcam and checking for webGL support *********/
 
 				var videoReady = false;
 				var imagesReady = false;
-				
+
 				function enablestart() {
 					if (videoReady && imagesReady) {
 						var startbutton = document.getElementById('startbutton');
@@ -155,7 +155,7 @@
     				imagesReady = true;
     				enablestart();
 				});
-				
+
 				var insertAltVideo = function(video) {
 					if (supports_video()) {
 						if (supports_ogg_theora_video()) {
@@ -182,14 +182,14 @@
 				if (webGLContext == null) {
 					alert("Your browser does not seem to support WebGL. Unfortunately this face mask example depends on WebGL, so you'll have to try it in another browser. :(");
 				}
-				
+
 				navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 				window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
-				
+
 				// check for camerasupport
 				if (navigator.getUserMedia) {
 					// set up stream
-					
+
 					// chrome 19 shim
 					var videoSelector = {video : true};
 					if (window.navigator.appVersion.match(/Chrome\/(.*?) /)) {
@@ -198,7 +198,7 @@
 							videoSelector = "video";
 						}
 					};
-					
+
 					navigator.getUserMedia(videoSelector, function( stream ) {
 						if (vid.mozCaptureStream) {
 							vid.mozSrcObject = stream;
@@ -218,7 +218,7 @@
 				vid.addEventListener('canplay', function() {videoReady = true;enablestart();}, false);
 
 				/*********** Code for face substitution *********/
-				
+
 				var animationRequest;
 				var positions;
 
@@ -275,7 +275,7 @@
 				};
 				var images = ["average", "terminator", "walter2", "clooney2", "bieber", "kim", "rihanna", "audrey", "bill", "connery2","cage3", "queen", "obama4", "chuck", "monalisa", "picasso1", "scream"];
 				var currentMask = 0;
-				
+
 				// canvas for copying the warped face to
 				var newcanvas = document.createElement('CANVAS');
 				newcanvas.width = vid.width;
@@ -287,7 +287,7 @@
 				// canvas for masking
 				var maskcanvas = document.createElement('CANVAS');
 				maskcanvas.width = vid.width;
-				maskcanvas.height = vid.height;	
+				maskcanvas.height = vid.height;
 				// create canvases for all the faces
 				var imageCanvases = {};
 				for (var i = 0;i < images.length;i++) {
@@ -375,10 +375,10 @@
 						requestAnimFrame(drawGridLoop);
 					}
 				}
-					
+
 				function switchMasks(pos) {
 					videocanvas.getContext('2d').drawImage(vid,0,0,videocanvas.width,videocanvas.height);
-					
+
 					// we need to extend the positions with new estimated points in order to get pixels immediately outside mask
 					var newMaskPos = masks[images[currentMask]].slice(0);
 					var newFacePos = pos.slice(0);
@@ -427,11 +427,11 @@
 						requestAnimFrame(drawMaskLoop);
 					});
 				}
-				
+
 				function drawMaskLoop() {
 					// get position of face
 					positions = ctrack.getCurrentPosition();
-					
+
 					/*for (var i = 0;i < positions.length;i++) {
 						positions[i][1] += 1;
 					}*/
@@ -459,7 +459,7 @@
 					cc.fillStyle="#ffffff";
 					cc.fill();
 				}
-				
+
 				/*********** Code for stats **********/
 
 				stats = new Stats();
@@ -470,6 +470,9 @@
 				document.addEventListener("clmtrackrIteration", function(event) {
 					stats.update();
 				}, false);
+
+				var positions = ctracker.getCurrentPositions();
+				console.log(positions);
 
 			</script>
 		</div>
